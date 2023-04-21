@@ -4,12 +4,20 @@ services:
     build:
       context: .
       dockerfile: ./Dockerfile
+    container_name: node-chatgpt
     environment:
-      - OPENAI_API_KEY=${OPENAI_API_KEY}
+      - OPENAI_API_KEY=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
       #- STORAGE_FILE_PATH=
       - API_PORT=3000
       - API_HOST=0.0.0.0
     volumes:
       - /root/node-chatgpt/settings.js:/app/chatgpt-api/settings.js:cached
-    ports:
-      - '3000:3000'
+    #ports:
+    #  - '3000:3000'
+    networks:
+      - one-network
+
+networks:
+  one-network:
+    external: true
+
