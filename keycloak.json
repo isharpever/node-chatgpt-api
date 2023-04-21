@@ -1,0 +1,11 @@
+{
+    "realm": "pandora",
+    "auth-server-url": "https://23.95.254.235:8443/auth",
+    "ssl-required": "external",
+    "resource": "pandoraServer",
+    "bearer-only": true,
+    "credentials": {
+      "secret": "a5ou0vMMlfHsX0kWUYncz16NQyb9Z6tr"
+    },
+    "realmPublicKey": "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAn3ebG2Xf0mSNhSJ5x2rsK7EbxR82vhfoNTxIM2go1VlOfpYSMkPloGTD9IAUaopB5mRiEWCpb35DMfhaeofFCViQj41LDZqaVoXMm+WsgfTuw+crDaGWdqC90wJwemrOtP2Tj6qU1HhQSchOQ4056tEX8zV7mxxWINA/IrRIGUWQ0EgoakoVtvKTz0e+L9uXeK+K8dhM336QqkNJfxZ1e2vdcP3/ctkeEAJytyyQq2rFJCmlkysAQeXZDIvEZ4UoLquF15Vp4D15dFJFsL4rjESs1BjIY2QugXf+lph6SwDdYJeJrn0Bas6cOnc6MX0bO7ifbstzHWDJbabKIZrw0QIDAQAB"
+}

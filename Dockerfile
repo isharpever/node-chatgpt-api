@@ -1,14 +1,12 @@
 FROM alpine:latest
 
-RUN apk add nodejs
-RUN apk add npm
+RUN apk add nodejs npm \
+    && npm install -g yarn
 
-COPY ./ /var/chatgpt-api
+COPY ./ /app/chatgpt-api
 
-WORKDIR /var/chatgpt-api
-RUN npm ci --no-color --quiet
-
-ENV API_HOST=0.0.0.0
+WORKDIR /app/chatgpt-api
+RUN yarn install --frozen-lockfile --non-interactive --no-progress
 
 EXPOSE 3000
 

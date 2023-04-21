@@ -1,5 +1,8 @@
 #!/usr/bin/env node
 import fastify from 'fastify';
+import fastifySession, { Store } from '@fastify/session';
+import fastifyCookie from '@fastify/cookie';
+import fastifyKeycloak from 'fastify-keycloak';
 import cors from '@fastify/cors';
 import { FastifySSEPlugin } from '@waylaidwanderer/fastify-sse-v2';
 import fs from 'fs';
@@ -42,12 +45,49 @@ if (settings.storageFilePath && !settings.cacheOptions.store) {
 const clientToUse = settings.apiOptions?.clientToUse || settings.clientToUse || 'chatgpt';
 const perMessageClientOptionsWhitelist = settings.apiOptions?.perMessageClientOptionsWhitelist || null;
 
-const server = fastify();
+const server = fastify({ logger: true });
 
 await server.register(FastifySSEPlugin);
 await server.register(cors, {
     origin: '*',
 });
+
+// 启用session支持
+const store = new Store();
+// server.register(fastifyCookie);
+// server.register(fastifySession, {
+//     store,
+//     secret: 'K1eE_EWtW4Eel3iT25s8mgelxDQJHWFP',
+//     // cookieName: 'sessionId', // optional, defaults to 'sessionId'
+//     // cookie: {
+//     //     secure: auto
+//     // }
+// });
+
+// 启用keycloak插件
+server.register(fastifyKeycloak, {
+    options: store,
+});
+server.addHook('onRequest', (request, reply, next) => {
+    if (request.kauth && request.kauth.grant) {
+        return next();
+    }
+    onError(request, reply);
+});
+async function onError(request, reply) {
+    console.log(`Access to ${request.url} denied.`)
+
+    reply.sse({
+        id: '',
+        event: 'error',
+        data: JSON.stringify({
+            code: '403',
+            error: 'Access Denied',
+        }),
+    });
+    await nextTick();
+    reply.raw.end();
+}
 
 server.get('/ping', () => Date.now().toString());
 
